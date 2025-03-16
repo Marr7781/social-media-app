@@ -22,7 +22,7 @@ app.use(cors({
 app.options('*', cors());
 
 console.time("MongoDB Connection Time"); // Mulai timer
-mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://...")
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
     .then(() => {
         console.timeEnd("MongoDB Connection Time"); // Akhiri timer dan log waktu
         console.log("Connected to MongoDB");
