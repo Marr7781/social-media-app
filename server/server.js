@@ -129,6 +129,7 @@ app.get('/getName', (req, res)=> {
 //in search page 
 //! RECONSTRUCTION 
 app.get('/gettweetcontent', (req, res)=> {
+    console.time("MongoDB Query Time")
     TweetModel.find()
     .then(tweet=> {
         const tweetContent = 
@@ -141,6 +142,7 @@ app.get('/gettweetcontent', (req, res)=> {
                 }
             )
         })
+        console.timeEnd("MongoDB Query Time")
         res.json(tweetContent)
     })
     .catch(err=> res.json(err))
