@@ -30,6 +30,13 @@ app.get('/servertest', (req, res)=> {
     res.json(`Server is working normally`)
 })
 
+//check-db-connection
+app.get('/check-db-connection', (req, res) => {
+    const dbStatus = mongoose.connection.readyState;
+    // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    res.json({ dbStatus });
+});
+
 //handle register
 app.post(`/register`, (req, res)=> {
     const {name} = req.body
