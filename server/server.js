@@ -10,12 +10,19 @@ const CAFModel = require('./models/CAF-model')
 //connect to database
 
 // Gunakan environment variable
-    mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://...")
-    .then(() => console.log("Connected to MongoDB"))
+
+console.time("MongoDB Connection Time"); // Mulai timer
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://...")
+    .then(() => {
+        console.timeEnd("MongoDB Connection Time"); // Akhiri timer dan log waktu
+        console.log("Connected to MongoDB");
+    })
     .catch(err => {
+        console.timeEnd("MongoDB Connection Time"); // Akhiri timer jika gagal
         console.error("MongoDB connection failed:", err);
         process.exit(1); // Stop server jika koneksi gagal
     });
+
 // mongoose.connect("mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
 
 //port
