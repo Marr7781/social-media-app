@@ -11,6 +11,16 @@ const CAFModel = require('./models/CAF-model')
 
 // Gunakan environment variable
 
+const cors = require('cors');
+
+//! DON'T FORGET TO CHANGE THE ORIGIN
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
+
+app.options('*', cors());
+
 console.time("MongoDB Connection Time"); // Mulai timer
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://...")
     .then(() => {
@@ -30,14 +40,6 @@ const PORT = process.env.PORT || 3001
 
 const app = express()
 app.use(express.json())
-
-const cors = require('cors');
-
-//! DON'T FORGET TO CHANGE THE ORIGIN
-app.use(cors({
-    origin: 'http://localhost:5173', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
 
 //servertest
 app.get('/servertest', (req, res)=> {
