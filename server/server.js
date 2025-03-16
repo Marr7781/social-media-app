@@ -11,8 +11,6 @@ const CAFModel = require('./models/CAF-model')
 
 // Gunakan environment variable
 
-const cors = require('cors');
-
 //! DON'T FORGET TO CHANGE THE ORIGIN
 app.use(cors({
     origin: 'http://localhost:5173', 
