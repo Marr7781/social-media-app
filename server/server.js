@@ -17,6 +17,11 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+//servertest
+app.get('/servertest', (req, res)=> {
+    res.json(`Server is working normally`)
+})
+
 //handle register
 app.post(`/register`, (req, res)=> {
     const {name} = req.body
@@ -412,6 +417,12 @@ app.post('/CAF', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
-app.listen(PORT, ()=> {
-    console.log(`Server is listening to port ${PORT}`)
-})
+module.exports = app
+
+    if (process.env.NODE_ENV !== 'production') {
+        app.listen(PORT, () => {
+        console.log(`Local dev server running on port ${PORT}`);
+        });
+    }
+
+//utk local machine, jalankan npm run dev
