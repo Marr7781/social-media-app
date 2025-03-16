@@ -8,7 +8,15 @@ const CommentModel = require('./models/commentmodels')
 const CAFModel = require('./models/CAF-model')
 
 //connect to database
-mongoose.connect("mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
+
+// Gunakan environment variable
+    mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://...")
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => {
+        console.error("MongoDB connection failed:", err);
+        process.exit(1); // Stop server jika koneksi gagal
+    });
+// mongoose.connect("mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
 
 //port
 const PORT = process.env.PORT || 3001
