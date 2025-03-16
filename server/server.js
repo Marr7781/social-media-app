@@ -417,12 +417,11 @@ app.post('/CAF', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
+
+
+app.listen(PORT, () => {
+    console.log(`Local dev server running on port ${PORT}`);
+});
+
 module.exports = app
-
-    if (process.env.NODE_ENV !== 'production') {
-        app.listen(PORT, () => {
-        console.log(`Local dev server running on port ${PORT}`);
-        });
-    }
-
 //utk local machine, jalankan npm run dev
