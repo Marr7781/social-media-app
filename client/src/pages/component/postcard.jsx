@@ -32,7 +32,7 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleGetLikeAmount = useCallback(() => {
     axios
-        .get(`http://localhost:3001/getLike?tweetId=${tweetId}`)
+        .get(`https://social-media-app-please3.vercel.app/getLike?tweetId=${tweetId}`)
         .then((res) => {
         setLikeAmount(res.data);
         })
@@ -41,7 +41,7 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleDeleteLike = useCallback(() => {
         axios
-        .put('http://localhost:3001/deleteLike', { tweetId: tweetId })
+        .put('https://social-media-app-please3.vercel.app/deleteLike', { tweetId: tweetId })
         .then((res) => {
             handleGetLikeAmount();
         })
@@ -50,7 +50,7 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleLike = useCallback(() => {
         axios
-        .put('http://localhost:3001/postLike', { tweetId: tweetId })
+        .put('https://social-media-app-please3.vercel.app/postLike', { tweetId: tweetId })
         .then((res) => {
             handleGetLikeAmount();
         })
@@ -59,7 +59,7 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleAddComment = useCallback(() => {
         axios
-        .post(`http://localhost:3001/addComment`, {
+        .post(`https://social-media-app-please3.vercel.app/addComment`, {
             commentIWantToAdd: commentIWantToAdd,
             tweetId: tweetId,
         })
@@ -98,7 +98,7 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleViewComment = useCallback(() => {
         axios
-        .get(`http://localhost:3001/getComment?tweetId=${tweetId}`)
+        .get(`https://social-media-app-please3.vercel.app/getComment?tweetId=${tweetId}`)
         .then((result) => {
             setCommentArray(result.data);
         
@@ -122,14 +122,14 @@ function PostCard({ tweet, name, tweetId }) {
 
     const handleGetSumOfComment = useCallback(() => {
         axios
-        .get(`http://localhost:3001/getSumOfComment?tweetId=${tweetId}`)
+        .get(`https://social-media-app-please3.vercel.app/getSumOfComment?tweetId=${tweetId}`)
         .then((result) => setSumOfComment(result.data))
         .catch((err) => console.log(err));
     }, [tweetId]);
 
     const handleGetFriendsGender = useCallback(() => {
         axios
-        .get(`http://localhost:3001/getFriendsGender?name=${name}`)
+        .get(`https://social-media-app-please3.vercel.app/getFriendsGender?name=${name}`)
         .then((result) => setProfile(result.data))
         .catch((err) => console.log(err));
     }, [name]);

@@ -11,7 +11,7 @@
 
     const handleGet = () => {
         axios
-        .get('http://localhost:3001/getNameInSearchPage')
+        .get('https://social-media-app-please3.vercel.app/getNameInSearchPage')
         .then((res) => {
             setDisplayNameOnSearchPage(res.data);
         })

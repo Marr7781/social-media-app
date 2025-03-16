@@ -40,7 +40,7 @@ function Home() {
 
     const handleSubmit = (e)=> {
 
-        axios.post('http://localhost:3001/home', {tweet: tweet})
+        axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet})
         .catch(err => {
             console.log(err)
         })
@@ -64,7 +64,7 @@ function Home() {
     }
 
     const handlePost = ()=> {
-        axios.get('http://localhost:3001/gettweetcontent')
+        axios.get('https://social-media-app-please3.vercel.app/gettweetcontent')
         .then(res=> {
             const shuffledArray = shuffleArray(res.data)
 
@@ -75,7 +75,7 @@ function Home() {
 
     const [profile, setProfile] = useState(true)
     const handleGetGender = () => {
-        axios.get('http://localhost:3001/getGender')
+        axios.get('https://social-media-app-please3.vercel.app/getGender')
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }

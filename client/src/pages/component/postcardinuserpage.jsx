@@ -13,7 +13,7 @@ function PostCardInUserPage({tweet, tweetId}){
     const [sumOfComment, setSumOfComment] = useState()
 
     const handleGetLikeAmount = () => {
-        axios.get(`http://localhost:3001/getLike?tweetId=${tweetId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getLike?tweetId=${tweetId}`)
         .then(res => {
             setLikeAmount(res.data)
         })
@@ -21,7 +21,7 @@ function PostCardInUserPage({tweet, tweetId}){
     }
 
     const handleGetSumOfComment = () => {
-        axios.get(`http://localhost:3001/getSumOfComment?tweetId=${tweetId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getSumOfComment?tweetId=${tweetId}`)
         .then(result => setSumOfComment(result.data))
         .catch(err=> console.log(err))
     }

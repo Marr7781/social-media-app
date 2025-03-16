@@ -21,7 +21,7 @@ function SignIn() {
     const navigate = useNavigate()
 
     const postData = (data)=> {
-        axios.post(`http://localhost:3001/register`, {name: data.name , password: data.password})
+        axios.post(`https://social-media-app-please3.vercel.app/register`, {name: data.name , password: data.password})
         .then(res=> {
             if(res.data === `This username is already used.`){
                 alert(res.data)

@@ -9,7 +9,7 @@ const CommentCard = ({userName, content})=> {
 
     const [profile, setProfile] = useState(true)
     const handleGetFriendsGender = () => {
-        axios.get(`http://localhost:3001/getFriendsGender?name=${userName}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getFriendsGender?name=${userName}`)
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }

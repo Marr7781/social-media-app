@@ -16,12 +16,12 @@ function FriendUserPage() {
 
     const handleClick = ()=> {
         if(followed){
-            axios.put('http://localhost:3001/deleteFollowList', {friendId: friendId})
+            axios.put('https://social-media-app-please3.vercel.app/deleteFollowList', {friendId: friendId})
             .catch(err=> console.log(err))
 
             setFollowed(!followed)
         } else {
-            axios.post('http://localhost:3001/addFollowList', {friendId: friendId})
+            axios.post('https://social-media-app-please3.vercel.app/addFollowList', {friendId: friendId})
             .catch(err=> console.log(err))
 
             setFollowed(!followed)
@@ -38,7 +38,7 @@ function FriendUserPage() {
 
     //! NEED TO BE FIXED -29/01/25
     const handleGetUserProfile = ()=> {
-        axios.get(`http://localhost:3001/getUserProfile?friendId=${friendId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getUserProfile?friendId=${friendId}`)
         .then(result => {
             if(result.data[0].tweetId){
                 const name = result.data[0].username
@@ -64,7 +64,7 @@ function FriendUserPage() {
     }
 
     const handleCheckFollowing = ()=> {
-        axios.get(`http://localhost:3001/checkFollowing?friendId=${friendId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/checkFollowing?friendId=${friendId}`)
         .then(result => {
             if (Object.keys(result.data).length === 0) {
                 setFollowed(false);
@@ -77,7 +77,7 @@ function FriendUserPage() {
 
     const [profile, setProfile] = useState(true)
     const handleGetFriendsGender = (name) => {
-        axios.get(`http://localhost:3001/getFriendsGender?name=${name}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getFriendsGender?name=${name}`)
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }
@@ -87,7 +87,7 @@ function FriendUserPage() {
     const [listFollowers, setListFollowers] = useState()
 
     const handleGetAmountOfFriendsFollowing = (friendId) => {
-        axios.get(`http://localhost:3001/getAmountOfFriendsFollowing?friendId=${friendId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFriendsFollowing?friendId=${friendId}`)
         .then(res => {
             if(res.data == null) {
                 setListFollowing(0)
@@ -99,7 +99,7 @@ function FriendUserPage() {
     }
 
     const handleGetAmountOfFriendsFollowers = (friendId) => {
-        axios.get(`http://localhost:3001/getAmountOfFriendsFollowers?friendId=${friendId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFriendsFollowers?friendId=${friendId}`)
         .then(res => {
             const countingFollowers = res.data.filter(Boolean).length
             setListFollowers(countingFollowers)
@@ -108,7 +108,7 @@ function FriendUserPage() {
     }
 
     const handleGetIdFromName = (name)=> {
-        axios.get(`http://localhost:3001/getIdFromName?name=${name}`)
+        axios.get(`https://social-media-app-please3.vercel.app/getIdFromName?name=${name}`)
         .then(result=> {
             const friendId = result.data
 

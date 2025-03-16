@@ -30,7 +30,15 @@ const PORT = process.env.PORT || 3001
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+
+const cors = require('cors');
+
+//! DON'T FORGET TO CHANGE THE ORIGIN
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    credentials: true, 
+}));
 
 //servertest
 app.get('/servertest', (req, res)=> {

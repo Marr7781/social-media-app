@@ -8,7 +8,7 @@ function FriendsChannel() {
     const [listFriendNameCard, setListFriendNameCard] = useState()
 
     const handleGetFriendsData = ()=> {
-        axios.get('http://localhost:3001/getFriendsData')
+        axios.get('https://social-media-app-please3.vercel.app/getFriendsData')
         .then(result=> {
             const resultData = result.data
             const promise = resultData.map(eachId => {
@@ -23,7 +23,7 @@ function FriendsChannel() {
     }
 
     const handleGetFriendsName = (eachId)=> {
-        return axios.get(`http://localhost:3001/getFriendsName?Id=${eachId}`)
+        return axios.get(`https://social-media-app-please3.vercel.app/getFriendsName?Id=${eachId}`)
         .then(result => result.data)
         .catch(err => console.log(err))
     }

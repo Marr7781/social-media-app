@@ -8,7 +8,7 @@ function FriendUserCard({name, friendId}) {
 
         const [profile, setProfile] = useState(true)
         const handleGetFriendsGender = () => {
-            axios.get(`http://localhost:3001/getFriendsGender?name=${name}`)
+            axios.get(`https://social-media-app-please3.vercel.app/getFriendsGender?name=${name}`)
             .then(result => setProfile(result.data))
             .catch(err=> console.log(err))
         }

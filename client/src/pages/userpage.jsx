@@ -16,7 +16,7 @@ function UserPage(){
     const [listFollowing, setListFollowing] = useState()
 
     const handleGetAmountOfFollowing = () => {
-        axios.get(`http://localhost:3001/getAmountOfFollowing`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowing`)
         .then(res => {
             if(res.data == null) {
                 setListFollowing(0)
@@ -30,7 +30,7 @@ function UserPage(){
 
     const [listFollowers, setListFollowers] = useState()
     const handleGetAmountOfFollowers = () => {
-        axios.get(`http://localhost:3001/getAmountOfFollowers`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowers`)
         .then(res => {
             const countingFollowers = res.data.filter(Boolean).length
             setListFollowers(countingFollowers)
@@ -39,7 +39,7 @@ function UserPage(){
     }
 
     const handleChangeProfile = () => {
-        axios.put('http://localhost:3001/changeProfile')
+        axios.put('https://social-media-app-please3.vercel.app/changeProfile')
         .then(result => {
             setProfile(!profile)
         })
@@ -47,14 +47,14 @@ function UserPage(){
     }
 
     const handleGetGender = () => {
-        axios.get('http://localhost:3001/getGender')
+        axios.get('https://social-media-app-please3.vercel.app/getGender')
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }
 
 //get username in userpage
     const handleGetName = ()=> {
-        axios.get('http://localhost:3001/getName')
+        axios.get('https://social-media-app-please3.vercel.app/getName')
         .then(result => {
             if(Object.keys(result.data).length === 0){
                 console.log(result.data)
@@ -68,7 +68,7 @@ function UserPage(){
     const [profile, setProfile] = useState(true)
 
     useEffect(()=> {
-        axios.get('http://localhost:3001/userpage')
+        axios.get('https://social-media-app-please3.vercel.app/userpage')
         .then(result => {
             setReels(result.data)            
             setTweetContentAmount(result.data.length)
