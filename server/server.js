@@ -1,4 +1,3 @@
-const app = express()
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
@@ -8,6 +7,7 @@ const FriendModel = require('./models/friendmodels')
 const CommentModel = require('./models/commentmodels')
 const CAFModel = require('./models/CAF-model')
 
+const app = express()
 //connect to database
 //port
 const PORT = process.env.PORT || 3001
