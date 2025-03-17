@@ -17,15 +17,13 @@ app.use(express.json())
 // Gunakan environment variable
 
 //! DON'T FORGET TO CHANGE THE ORIGIN
-// app.use(cors({
-//     origin: 'http://localhost:5173', 
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-// }));
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
 
 
-// app.options('*', cors());
-
-app.use(cors())
+app.options('*', cors());
 
 console.time("MongoDB Connection Time"); // Mulai timer
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
