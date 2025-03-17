@@ -8,6 +8,12 @@ const CommentModel = require('./models/commentmodels')
 const CAFModel = require('./models/CAF-model')
 
 //connect to database
+//port
+const PORT = process.env.PORT || 3001
+
+const app = express()
+app.use(express.json())
+
 
 // Gunakan environment variable
 
@@ -32,13 +38,6 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://marveltjenyani8:miawm
     });
 
 // mongoose.connect("mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
-
-//port
-const PORT = process.env.PORT || 3001
-
-const app = express()
-app.use(express.json())
-
 //servertest
 app.get('/servertest', (req, res)=> {
     res.json(`Server is working normally`)
