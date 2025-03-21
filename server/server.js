@@ -32,20 +32,20 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// HAPUS LINE INI: app.options('*', cors()); // Tidak diperlukan lagi
 console.time("MongoDB Connection Time"); // Mulai timer
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
     .then(() => {
-        console.timeEnd("MongoDB Connection Time"); // Akhiri timer dan log waktu
+        console.timeEnd("MongoDB Connection Time");
         console.log("Connected to MongoDB");
     })
     .catch(err => {
-        console.timeEnd("MongoDB Connection Time"); // Akhiri timer jika gagal
+        console.timeEnd("MongoDB Connection Time");
         console.error("MongoDB connection failed:", err);
-        process.exit(1); // Stop server jika koneksi gagal
+        process.exit(1);
     });
 
 // mongoose.connect("mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
+
 //servertest
 app.get('/servertest', (req, res)=> {
     res.json(`Server is working normally`)
@@ -106,23 +106,33 @@ app.post(`/login`, (req, res)=> {
 })
 
 //handle tweet posting
-
-//! RECONTRUCTION 
+//! COOKIE ADDED
 app.post('/home', (req, res)=> {
     const {tweet} = req.body
-    TweetModel.create({id: userId, userName: userName, content: tweet})
-    .then(result => {
-        res.json({message: 'Tweet added', result})
-    })
-    .catch(err => {
-        res.json(err)
-    })
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+        TweetModel.create({id: decoded.userId, userName: decoded.userName, content: tweet})
+        .then(result => res.json({message: 'Tweet added', result}))
+        .catch(err => res.json(err))
+    }
 })
 
 //handle userpage
+//! COOKIE ADDED
 app.get('/userpage', (req, res)=> {
-    TweetModel.find({userName: userName})
-    .then(listTweet=> {
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        TweetModel.find({userName: decoded.userName})
+        .then(listTweet=> {
         const myContent = 
         listTweet.map(eachTweet=> {
             return (
@@ -134,8 +144,9 @@ app.get('/userpage', (req, res)=> {
             )
         })
         res.json(myContent)
-    })
-    .catch(err=> res.json(err))
+        })
+        .catch(err=> res.json(err))
+    }
 })
 
 //! COOKIE ADDED
@@ -155,7 +166,7 @@ app.get('/getName', (req, res)=> {
 
 //handle recall user "name" data
 //in search page 
-//! RECONSTRUCTION 
+//! DOESN'T NEED COOKIE
 app.get('/gettweetcontent', (req, res)=> {
     console.time("MongoDB Query Time")
     TweetModel.find()
@@ -176,6 +187,7 @@ app.get('/gettweetcontent', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
+//! DOESN'T NEED COOKIE
 app.get('/getNameInSearchPage', (req, res)=> {
     UserModel.find()
     .then(users=> {
@@ -193,6 +205,7 @@ app.get('/getNameInSearchPage', (req, res)=> {
 })
 
 //add like
+//! DOESN'T NEED COOKIE
 app.put('/postLike', (req, res)=> {
     const {tweetId} = req.body
     TweetModel.updateOne({_id: tweetId},
@@ -205,6 +218,7 @@ app.put('/postLike', (req, res)=> {
 })
 
 //get like amount
+//! DOESN'T NEED COOKIE
 app.get('/getLike', (req, res)=> {
     const {tweetId} = req.query
     TweetModel.findOne({_id: tweetId})
@@ -215,6 +229,7 @@ app.get('/getLike', (req, res)=> {
 })
 
 //delete like
+//! DOESN'T NEED COOKIE
 app.put('/deleteLike', (req, res)=> {
     const {tweetId} = req.body
     TweetModel.updateOne({_id: tweetId},
@@ -227,6 +242,7 @@ app.put('/deleteLike', (req, res)=> {
 })
 
 //get friend profile data (in search page)
+//! DOESN'T NEED COOKIE
 app.get('/getUserProfile', (req, res) => {
     const { friendId } = req.query;
     
@@ -258,46 +274,72 @@ app.get('/getUserProfile', (req, res) => {
 });
 
 //follow management / add friend (follow)
+//! COOKIE ADDED
 app.post('/addFollowList', (req, res)=> {
     const {friendId} = req.body
+    const token = req.cookies.token
 
-    FriendModel.findOne({userId: userId})
-    .then(result=> {
-        if(result) {
-            FriendModel.updateOne({userId: userId},
-                {$push: {friends: friendId}})
-            .then(result=> res.json(result))
-            .catch(err=> res.json(err))
-        } else {
-            FriendModel.create({userId: userId, friends: friendId})
-            .then(result=> {
-                res.json(result)
-            })
-            .catch(err=> res.json(err))
-        }
-    })    
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.findOne({userId: decoded.userId})
+        .then(result=> {
+            if(result) {
+                FriendModel.updateOne({userId: decoded.userId},
+                    {$push: {friends: friendId}})
+                .then(result=> res.json(result))
+                .catch(err=> res.json(err))
+            } else {
+                FriendModel.create({userId: decoded.userId, friends: friendId})
+                .then(result=> {
+                    res.json(result)
+                })
+                .catch(err=> res.json(err))
+            }
+        })   
+    }
 })
 
 //follow management / delete friend (unfollow)
+//! COOKIE ADDED
 app.put('/deleteFollowList', (req, res)=> {
     const {friendId} = req.body
+    const token = req.cookies.token
 
-    FriendModel.updateOne({userId: userId}, 
-        {$pull: {friends: friendId}})
-    .then(result=> res.json(result))
-    .catch(err=> res.json(err))
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.updateOne({userId: decoded.userId}, 
+            {$pull: {friends: friendId}})
+        .then(result=> res.json(result))
+        .catch(err=> res.json(err))
+    }
 })
 
 //get friends list in and put it in friend-page
+//! COOKIE ADDED
 app.get('/getFriendsData', (req, res)=> {
-    FriendModel.findOne({userId: userId})
-    .then(user=> {
-        res.json(user.friends)
-    })
-    .catch(err => res.json(err))
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.findOne({userId: decoded.userId})
+        .then(user=> {
+            res.json(user.friends)
+        })
+        .catch(err => res.json(err))
+    }
 })
 
 //just to get the name for friend page
+//! DOESN'T NEED COOKIE
 app.get('/getFriendsName', (req, res)=> {
     const {Id} = req.query
 
@@ -307,34 +349,51 @@ app.get('/getFriendsName', (req, res)=> {
 })
 
 //check following
+//! COOKIE ADDED
 app.get('/checkFollowing', (req, res)=> {
     const {friendId} = req.query
+    const token = req.cookies.token
 
-    FriendModel.findOne({userId: userId})
-    .then(result => {
-        const listFollower = result.friends
-        res.json(listFollower.includes(friendId))
-    })
-    .catch(err => res.json(err))
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.findOne({userId: decoded.userId})
+        .then(result => {
+            const listFollower = result.friends
+            res.json(listFollower.includes(friendId))
+        })
+        .catch(err => res.json(err))
+    }
 })
 
 //add comment
+//! COOKIE ADDED
 app.post('/addComment', (req, res)=> {
     const {commentIWantToAdd, tweetId} = req.body
+    const token = req.cookies.token
 
-    CommentModel.create({
-        content: commentIWantToAdd,
-        commenterId: userId,
-        commenterUserName: userName,
-        tweetId: tweetId,
-    })
-    .then(result=> {
-        res.json(result)
-    })
-    .catch(err=> res.json(err))
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        CommentModel.create({
+            content: commentIWantToAdd,
+            commenterId: decoded.userId,
+            commenterUserName: decoded.userName,
+            tweetId: tweetId,
+        })
+        .then(result=> {
+            res.json(result)
+        })
+        .catch(err=> res.json(err))
+    }
 })
 
 //get comment
+//! DOESN'T NEED COOKIE
 app.get('/getComment', (req,res)=> {
     const {tweetId} = req.query
     
@@ -354,6 +413,7 @@ app.get('/getComment', (req,res)=> {
 })
 
 //get sum of comment
+//! DOESN'T NEED COOKIE
 app.get('/getSumOfComment', (req, res)=> {
     const {tweetId} = req.query
 
@@ -367,52 +427,85 @@ app.get('/getSumOfComment', (req, res)=> {
 })
 
 //get amount of following
+//! COOKIE ADDED
 app.get('/getAmountOfFollowing', (req, res)=> {
-    FriendModel.findOne({userId: userId})
-    .then(user => {
-        res.json(user)
-    })
-    .catch(err=> res.json(err))
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.findOne({userId: userId})
+        .then(user => {
+            res.json(user)
+        })
+        .catch(err=> res.json(err))
+    }
 })
 
 //get amount of followers
+//! COOKIE ADDED
 app.get('/getAmountOfFollowers', (req, res)=> {
-    FriendModel.find()
-    .then(users => {
-        const booleanArray = users.map(eachUser => {
-            return eachUser.friends.includes(userId)
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        FriendModel.find()
+        .then(users => {
+            const booleanArray = users.map(eachUser => {
+                return eachUser.friends.includes(decoded.userId)
+            })
+            res.json(booleanArray)
         })
-        res.json(booleanArray)
-    })
+    }
 })
 
-let newGender
 // change profile
+//! COOKIE ADDED
 app.put('/changeProfile', (req, res) => {
-    UserModel.findOne({_id: userId})
-    .then(user => {
-        newGender = !user.gender
-        
-        return (
-            UserModel.updateOne({ _id: userId }, {
-            $set: {gender: newGender}
-            })
-        )
-    })
-    .then(result => res.json(result))
-    .catch(err => res.json(err))
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        UserModel.findOne({_id: decoded.userId})
+        .then(user => {
+            let newGender = !user.gender
+            
+            return (
+                UserModel.updateOne({ _id: decoded.userId }, {
+                $set: {gender: newGender}
+                })
+            )
+        })
+        .then(result => res.json(result))
+        .catch(err => res.json(err))
+    }
 })
 
 //get gender
+//! COOKIE ADDED
 app.get('/getGender', (req, res) => {
-    UserModel.findOne({ _id: userId })
-    .then(user => {
-        res.json(user.gender)
-    })
-    .catch(err => res.json(err))
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+        UserModel.findOne({ _id: decoded.userId })
+        .then(user => res.json(user.gender))
+        .catch(err => res.json(err))
+    }
 })
 
 //get friends gender
+//! DOESN'T NEED COOKIE
 app.get('/getFriendsGender', (req, res)=> {
     const {name} = req.query
     UserModel.findOne({name: name})
@@ -420,10 +513,8 @@ app.get('/getFriendsGender', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
-
-
 //get amount of friends followers and following
-
+//! DOESN'T NEED COOKIE
 app.get('/getAmountOfFriendsFollowing', (req, res)=> {
     const {friendId} = req.query
     FriendModel.findOne({userId: friendId})
@@ -433,7 +524,7 @@ app.get('/getAmountOfFriendsFollowing', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
-
+//! DOESN'T NEED COOKIE
 app.get('/getAmountOfFriendsFollowers', (req, res)=> {
     const {friendId} = req.query
     FriendModel.find()
@@ -446,9 +537,8 @@ app.get('/getAmountOfFriendsFollowers', (req, res)=> {
 })
 
 
-
 //get id from name
-
+//! DOESN'T NEED COOKIE
 app.get('/getIdFromName', (req, res)=> {
     const {name} = req.query
 
@@ -461,12 +551,20 @@ app.get('/getIdFromName', (req, res)=> {
 
 
 //post CAF
+//! COOKIE ADDED
 app.post('/CAF', (req, res)=> {
     const {CAF} = req.body
+    const token = req.cookies.token
 
-    CAFModel.create({content: CAF, userName: userName})
-    .then(result => res.json(result))
-    .catch(err=> res.json(err))
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+
+        CAFModel.create({content: CAF, userName: decoded.userName})
+        .then(result => res.json(result))
+        .catch(err=> res.json(err))
+    }
 })
 
 

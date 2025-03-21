@@ -16,12 +16,12 @@ function FriendUserPage() {
 
     const handleClick = ()=> {
         if(followed){
-            axios.put('https://social-media-app-please3.vercel.app/deleteFollowList', {friendId: friendId})
+            axios.put('https://social-media-app-please3.vercel.app/deleteFollowList', {friendId: friendId}, { withCredentials: true })
             .catch(err=> console.log(err))
 
             setFollowed(!followed)
         } else {
-            axios.post('https://social-media-app-please3.vercel.app/addFollowList', {friendId: friendId})
+            axios.post('https://social-media-app-please3.vercel.app/addFollowList', {friendId: friendId}, { withCredentials: true })
             .catch(err=> console.log(err))
 
             setFollowed(!followed)
@@ -64,7 +64,7 @@ function FriendUserPage() {
     }
 
     const handleCheckFollowing = ()=> {
-        axios.get(`https://social-media-app-please3.vercel.app/checkFollowing?friendId=${friendId}`)
+        axios.get(`https://social-media-app-please3.vercel.app/checkFollowing?friendId=${friendId}`, { withCredentials: true })
         .then(result => {
             if (Object.keys(result.data).length === 0) {
                 setFollowed(false);

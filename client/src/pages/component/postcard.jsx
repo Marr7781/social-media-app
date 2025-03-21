@@ -62,7 +62,7 @@ function PostCard({ tweet, name, tweetId }) {
         .post(`https://social-media-app-please3.vercel.app/addComment`, {
             commentIWantToAdd: commentIWantToAdd,
             tweetId: tweetId,
-        })
+        }, { withCredentials: true })
         .then((res) => {
             setCommentArray((prevComments) => [
             ...prevComments,
@@ -197,6 +197,7 @@ function PostCard({ tweet, name, tweetId }) {
     }, [
         viewComment,
         commentArray,
+    
         displayedComments,
         handleGetLikeAmount,
         handleGetSumOfComment,

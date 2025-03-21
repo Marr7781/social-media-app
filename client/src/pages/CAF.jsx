@@ -11,7 +11,7 @@
         e.preventDefault();
         // Tambahkan logika untuk mengirim feedback di sini
 
-        axios.post('https://social-media-app-please3.vercel.app/CAF', {CAF: feedback})
+        axios.post('https://social-media-app-please3.vercel.app/CAF', {CAF: feedback}, { withCredentials: true })
         .catch(err=> console.log(err))
 
         setFeedback(''); // Reset textarea setelah submit

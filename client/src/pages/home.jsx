@@ -40,7 +40,7 @@ function Home() {
 
     const handleSubmit = (e)=> {
 
-        axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet})
+        axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet}, {withCredentials: true})
         .catch(err => {
             console.log(err)
         })
@@ -74,8 +74,10 @@ function Home() {
     } 
 
     const [profile, setProfile] = useState(true)
+
+    //! COOKIE ADDED
     const handleGetGender = () => {
-        axios.get('https://social-media-app-please3.vercel.app/getGender')
+        axios.get('https://social-media-app-please3.vercel.app/getGender', { withCredentials: true })
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }

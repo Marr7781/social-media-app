@@ -16,7 +16,7 @@ function UserPage(){
     const [listFollowing, setListFollowing] = useState()
 
     const handleGetAmountOfFollowing = () => {
-        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowing`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowing`, { withCredentials: true })
         .then(res => {
             if(res.data == null) {
                 setListFollowing(0)
@@ -30,7 +30,7 @@ function UserPage(){
 
     const [listFollowers, setListFollowers] = useState()
     const handleGetAmountOfFollowers = () => {
-        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowers`)
+        axios.get(`https://social-media-app-please3.vercel.app/getAmountOfFollowers`, { withCredentials: true })
         .then(res => {
             const countingFollowers = res.data.filter(Boolean).length
             setListFollowers(countingFollowers)
@@ -39,7 +39,7 @@ function UserPage(){
     }
 
     const handleChangeProfile = () => {
-        axios.put('https://social-media-app-please3.vercel.app/changeProfile')
+        axios.put('https://social-media-app-please3.vercel.app/changeProfile', { withCredentials: true })
         .then(result => {
             setProfile(!profile)
         })
@@ -69,7 +69,7 @@ function UserPage(){
     const [profile, setProfile] = useState(true)
 
     useEffect(()=> {
-        axios.get('https://social-media-app-please3.vercel.app/userpage')
+        axios.get('https://social-media-app-please3.vercel.app/userpage', { withCredentials: true })
         .then(result => {
             setReels(result.data)            
             setTweetContentAmount(result.data.length)
