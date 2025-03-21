@@ -39,7 +39,7 @@ function UserPage(){
     }
 
     const handleChangeProfile = () => {
-        axios.put('https://social-media-app-please3.vercel.app/changeProfile', { withCredentials: true })
+        axios.put('https://social-media-app-please3.vercel.app/changeProfile', {}, { withCredentials: true })
         .then(result => {
             setProfile(!profile)
         })
