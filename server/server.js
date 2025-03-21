@@ -116,7 +116,7 @@ app.post('/home', (req, res)=> {
     } else {
         const decoded = jwt.verify(token, SECRET_KEY)
 
-        console.log(decoded)
+        res.json(decoded)
         // TweetModel.create({id: decoded.userId, userName: decoded.userName, content: tweet})
         // .then(result => res.json({message: 'Tweet added', result}))
         // .catch(err => res.json(err))
