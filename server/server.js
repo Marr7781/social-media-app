@@ -115,9 +115,11 @@ app.post('/home', (req, res)=> {
         return res.status(401).json({ message: 'No token provided, please log in.' });
     } else {
         const decoded = jwt.verify(token, SECRET_KEY)
-        TweetModel.create({id: decoded.userId, userName: decoded.userName, content: tweet})
-        .then(result => res.json({message: 'Tweet added', result}))
-        .catch(err => res.json(err))
+
+        console.log(decoded)
+        // TweetModel.create({id: decoded.userId, userName: decoded.userName, content: tweet})
+        // .then(result => res.json({message: 'Tweet added', result}))
+        // .catch(err => res.json(err))
     }
 })
 
@@ -168,7 +170,6 @@ app.get('/getName', (req, res)=> {
 //in search page 
 //! DOESN'T NEED COOKIE
 app.get('/gettweetcontent', (req, res)=> {
-    console.time("MongoDB Query Time")
     TweetModel.find()
     .then(tweet=> {
         const tweetContent = 
@@ -181,7 +182,6 @@ app.get('/gettweetcontent', (req, res)=> {
                 }
             )
         })
-        console.timeEnd("MongoDB Query Time")
         res.json(tweetContent)
     })
     .catch(err=> res.json(err))

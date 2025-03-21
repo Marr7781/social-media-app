@@ -39,8 +39,10 @@ function Home() {
         }}
 
     const handleSubmit = (e)=> {
+        e.preventDefault()
 
         axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet}, {withCredentials: true})
+        .then(res => console.log(res.data))
         .catch(err => {
             console.log(err)
         })
@@ -69,6 +71,7 @@ function Home() {
             const shuffledArray = shuffleArray(res.data)
 
             setReels(shuffledArray)
+            console.log(res.data)
         })
         .catch(err => console.log(err))
     } 
