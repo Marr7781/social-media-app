@@ -87,6 +87,8 @@ app.post(`/login`, (req, res)=> {
 
                 res.cookie('token', token, {
                     httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                     maxAge: 3600000,
                 });
 
@@ -434,7 +436,7 @@ app.get('/getAmountOfFollowing', (req, res)=> {
     } else {
         const decoded = jwt.verify(token, SECRET_KEY)
 
-        FriendModel.findOne({userId: userId})
+        FriendModel.findOne({userId: decoded.userId})
         .then(user => {
             res.json(user)
         })
