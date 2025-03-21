@@ -47,7 +47,7 @@ function UserPage(){
     }
 
     const handleGetGender = () => {
-        axios.get('https://social-media-app-please3.vercel.app/getGender')
+        axios.get('https://social-media-app-please3.vercel.app/getGender', { withCredentials: true })
         .then(result => setProfile(result.data))
         .catch(err=> console.log(err))
     }
