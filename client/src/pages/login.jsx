@@ -16,7 +16,7 @@ function Login() {
         e.preventDefault()
         setNameError("")
         setPasswordError("")
-        axios.post("https://social-media-app-please3.vercel.app/login", {name, password})
+        axios.post("https://social-media-app-please3.vercel.app/login", {name, password}, { withCredentials: true })
         .then(res=> {
             if(res.data.message === "login success"){
                 navigate('/home')
