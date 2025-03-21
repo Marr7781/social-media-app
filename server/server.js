@@ -6,25 +6,33 @@ const TweetModel = require('./models/tweetmodels')
 const FriendModel = require('./models/friendmodels')
 const CommentModel = require('./models/commentmodels')
 const CAFModel = require('./models/CAF-model')
+const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 //connect to database
 //port
 const PORT = process.env.PORT || 3001
-app.use(express.json())
 
+app.use(express.json())
+app.use(cookieParser())
+
+const SECRET_KEY = "test123"
 
 // Gunakan environment variable
 
 //! DON'T FORGET TO CHANGE THE ORIGIN
-app.use(cors({
-    origin: 'http://localhost:5173', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
 
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'] 
+};
 
-app.options('*', cors());
+app.use(cors(corsOptions));
 
+// HAPUS LINE INI: app.options('*', cors()); // Tidak diperlukan lagi
 console.time("MongoDB Connection Time"); // Mulai timer
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://marveltjenyani8:miawmiawaug@test-cluster.zayivlf.mongodb.net/socialmediapp")
     .then(() => {
@@ -67,18 +75,23 @@ app.post(`/register`, (req, res)=> {
     .catch(err=> res.json(err))
 })
 
-let userId
-let userName
-
-//handle log-in
+//handle log-in 
+//! COOKIE ADDED
 app.post(`/login`, (req, res)=> {
     const {name, password} = req.body
     UserModel.findOne({name: name})
     .then(user => {
         if(user) {
             if(user.password === password) {
-                userId = user._id
-                userName = user.name
+                const token = jwt.sign({userId: user._id, username: user.name}, SECRET_KEY, { expiresIn: '1h' })
+
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 3600000,
+                });
+
                 return res.json({
                     message: 'login success',
                 })
@@ -125,10 +138,19 @@ app.get('/userpage', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
+//! COOKIE ADDED
 app.get('/getName', (req, res)=> {
-    UserModel.findOne({_id: userId})
-    .then(user => res.json(user.name))
-    .catch(err=> res.json(err))
+    const token = req.cookies.token
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, please log in.' });
+    } else {
+        const decoded = jwt.verify(token, SECRET_KEY)
+        UserModel.findOne({_id: decoded.userId})
+        .then(user => res.json(user.name))
+        .catch(err=> res.json(err))
+    }
+
 })
 
 //handle recall user "name" data

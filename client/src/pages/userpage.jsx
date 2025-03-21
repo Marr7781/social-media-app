@@ -53,8 +53,9 @@ function UserPage(){
     }
 
 //get username in userpage
+//! COOKIE ADDED
     const handleGetName = ()=> {
-        axios.get('https://social-media-app-please3.vercel.app/getName')
+        axios.get('https://social-media-app-please3.vercel.app/getName', { withCredentials: true })
         .then(result => {
             if(Object.keys(result.data).length === 0){
                 console.log(result.data)
