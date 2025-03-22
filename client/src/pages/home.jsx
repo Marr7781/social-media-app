@@ -69,7 +69,7 @@ function Home() {
         axios.get('https://social-media-app-please3.vercel.app/gettweetcontent')
         .then(res=> {
             const shuffledArray = shuffleArray(res.data)
-
+        
             setReels(shuffledArray)
             console.log(res.data)
         })

@@ -116,10 +116,9 @@ app.post('/home', (req, res)=> {
     } else {
         const decoded = jwt.verify(token, SECRET_KEY)
 
-        res.json({decoded, tweet})
-        // TweetModel.create({id: decoded.userId, userName: decoded.username, content: tweet})
-        // .then(result => res.json({message: 'Tweet added', result}))
-        // .catch(err => res.json(err))
+        TweetModel.create({id: decoded.userId, userName: decoded.username, content: tweet})
+        .then(result => res.json({message: 'Tweet added', result}))
+        .catch(err => res.json(err))
     }
 })
 
@@ -166,8 +165,6 @@ app.get('/getName', (req, res)=> {
 
 })
 
-//handle recall user "name" data
-//in search page 
 //! DOESN'T NEED COOKIE
 app.get('/gettweetcontent', (req, res)=> {
     TweetModel.find()
@@ -187,6 +184,8 @@ app.get('/gettweetcontent', (req, res)=> {
     .catch(err=> res.json(err))
 })
 
+//handle recall user "name" data
+//in search page 
 //! DOESN'T NEED COOKIE
 app.get('/getNameInSearchPage', (req, res)=> {
     UserModel.find()
