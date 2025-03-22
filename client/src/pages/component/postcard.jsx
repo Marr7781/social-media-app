@@ -101,6 +101,7 @@ function PostCard({ tweet, name, tweetId }) {
         .get(`https://social-media-app-please3.vercel.app/getComment?tweetId=${tweetId}`)
         .then((result) => {
             setCommentArray(result.data);
+            console.log(result.data)
         
 
             if (result.data.length > 5) {

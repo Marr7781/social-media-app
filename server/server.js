@@ -83,7 +83,7 @@ app.post(`/login`, (req, res)=> {
     .then(user => {
         if(user) {
             if(user.password === password) {
-                const token = jwt.sign({userId: user._id, username: user.name}, SECRET_KEY, { expiresIn: '1h' })
+                const token = jwt.sign({userId: user._id, userName: user.name}, SECRET_KEY, { expiresIn: '1h' })
 
                 res.cookie('token', token, {
                     httpOnly: true,
@@ -116,7 +116,7 @@ app.post('/home', (req, res)=> {
     } else {
         const decoded = jwt.verify(token, SECRET_KEY)
 
-        TweetModel.create({id: decoded.userId, userName: decoded.username, content: tweet})
+        TweetModel.create({id: decoded.userId, userName: decoded.userName, content: tweet})
         .then(result => res.json({message: 'Tweet added', result}))
         .catch(err => res.json(err))
     }
@@ -372,7 +372,6 @@ app.get('/checkFollowing', (req, res)=> {
 app.post('/addComment', (req, res)=> {
     const {commentIWantToAdd, tweetId} = req.body
     const token = req.cookies.token
-
     if (!token) {
         return res.status(401).json({ message: 'No token provided, please log in.' });
     } else {
