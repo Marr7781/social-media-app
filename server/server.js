@@ -565,7 +565,16 @@ app.post('/CAF', (req, res)=> {
     }
 })
 
-
+app.post('/logout', (req, res)=> {
+    res.clearCookie('jwt', {
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === 'production', 
+        sameSite: 'Strict', 
+        path: '/', 
+    });
+    
+    return res.status(200).json({ message: 'Logged out successfully' });
+})
 
 app.listen(PORT, () => {
     console.log(`Local dev server running on port ${PORT}`);

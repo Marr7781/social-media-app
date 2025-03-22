@@ -38,7 +38,15 @@ function Home() {
                 //54px represents the textarea default height
         }}
 
+    const handleLogout = ()=> {
+        axios.post('https://social-media-app-please3.vercel.app/logout',)
+        .then(res=> console.log(res.data))
+        .catch(err=> console.log(err))
+    }
+
     const handleSubmit = (e)=> {
+        e.preventDefault()
+
         axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet}, {withCredentials: true})
         .then(res => console.log(res.data))
         .catch(err => {
@@ -114,6 +122,7 @@ function Home() {
                 Critics and Feedback
                 </Link>
                 <Link
+                onClick={handleLogout}
                 to="/register"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-300 transition duration-200"
                 >
