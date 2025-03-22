@@ -68,9 +68,9 @@ function FriendUserPage() {
     const handleCheckFollowing = ()=> {
         axios.get(`https://social-media-app-please3.vercel.app/checkFollowing?friendId=${friendId}`, { withCredentials: true })
         .then(result => {
-            if (result.data) {
+            if (result.data === true) {
                 setFollowed(true);
-            } else {
+            } else if (result.data === "{}"){
                 setFollowed(false);
             }
         })
@@ -123,7 +123,7 @@ function FriendUserPage() {
     useEffect(()=> {
         handleGetUserProfile()
         handleCheckFollowing()
-    }, [])
+    }, [handleClick])
 
     return (
         <div className="bg-[#105E8F] min-h-[100vh] py-[52px]">

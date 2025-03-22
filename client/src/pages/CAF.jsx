@@ -15,6 +15,7 @@
         .catch(err=> console.log(err))
 
         setFeedback(''); // Reset textarea setelah submit
+        alert("Thanks for your feedback!")
     }
 
     return (

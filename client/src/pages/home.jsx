@@ -44,22 +44,31 @@ function Home() {
         .catch(err=> console.log(err))
     }
 
-    const handleSubmit = (e)=> {
-        e.preventDefault()
-
-        axios.post('https://social-media-app-please3.vercel.app/home', {tweet: tweet}, {withCredentials: true})
-        .then(res => console.log(res.data))
-        .catch(err => {
-            console.log(err)
-        })
-
-        setTweetPostCardList([...tweetPostCardList, {tweet: tweet}])
-        setTweet("")
-        textareaRef.current.value = null
-        textareaRef.current.style.height = 'auto'
-        cardRef.current.style.height = '150px'
-    }
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            
+            try {
+        
+            const response = await axios.post(
+                'https://social-media-app-please3.vercel.app/home',
+                { tweet },
+                { withCredentials: true }
+            );
+        
+            console.log(response.data);
     
+            setTweet("");
+            textareaRef.current.value = null;
+            textareaRef.current.style.height = 'auto';
+            cardRef.current.style.height = '150px';
+        
+            window.location.reload();
+        
+            } catch (err) {
+            console.log(err);
+            }
+        };
+        
     //tempat dimana kita ngespawn tweet di home, pas pertama kali render
     //mengacak urutan di dalam array
     function shuffleArray(array) {
