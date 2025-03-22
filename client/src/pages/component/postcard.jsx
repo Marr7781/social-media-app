@@ -283,7 +283,9 @@ function PostCard({ tweet, name, tweetId }) {
                             value={commentIWantToAdd}
                             className="font-Poppins w-full outline-none resize-none rounded-2xl p-2 mr-3 text-sm text-gray-700"
                             placeholder="Comment something..."
-                            rows="1" // Menetapkan jumlah baris awal
+                            rows="1" 
+                            required
+                            // Menetapkan jumlah baris awal
                         />
                         <button
                             onClick={handleAddComment}
