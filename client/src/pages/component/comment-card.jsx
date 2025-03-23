@@ -40,7 +40,7 @@ const CommentCard = ({userName, content})=> {
                     rows={1}
                     cols={30}
                     ref={commentCardRef}
-                    className="outline-none resize-none font-Poppins text-[1rem] py-[5px]"
+                    className="outline-none resize-none font-Poppins text-[1rem] py-[5px] border border-black"
                     value={content}
                     readOnly/>
                 </div>
