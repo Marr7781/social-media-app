@@ -24,7 +24,7 @@ const SECRET_KEY = "5a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f
 //! DON'T FORGET TO CHANGE THE ORIGIN
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://marr7781.github.io/socialmedia-replica/',
     credentials: true, 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'] 
